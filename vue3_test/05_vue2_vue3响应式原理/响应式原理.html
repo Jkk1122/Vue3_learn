@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    // 源数据
+    let person = {
+        name:'张三',
+        age:12
+    }
+
+    // 模仿vue2的响应式原理
+    // #region
+    // 无法检测拦截数据的 添加和删除
+    // let p = {}
+    // // 代理person的name属性
+    // Object.defineProperty(p,'name',{
+    //     get(){
+    //         //当访问name属性的时候就会触发get
+    //         console.log('有人访问了name属性');
+    //         return person.name
+    //     },
+    //     set(value){
+    //         // 当修改name属性的时候就会触发set
+    //         console.log('有人修改了name属性');
+    //         person.name = value
+    //     }
+    // })
+    // // 代理person的age属性
+    // Object.defineProperty(p,'age',{
+    //     get(){
+    //         //当访问age属性的时候就会触发get
+    //         console.log('有人访问了age属性');
+    //         return person.age
+    //     },
+    //     set(value){
+    //         // 当修改age属性的时候就会触发set
+    //         console.log('有人修改了age属性');
+    //         person.age = value
+    //     }
+    // })
+    //#endregion
+    
+    // new一个Proxy实例
+
+    // 可以完美的监测数据的增删改查
+    const p = new Proxy(person,{
+        get(target,propName){
+            // 当读取的时候触发get
+            console.log(`有人访问了${propName}属性`);
+            // 使用Reflect修改数据
+            return Reflect.get(target,propName)
+        },
+        set(target,propName,value){
+            // 当修改或者增加某个属性时候触发set
+            Reflect.set(target,propName,value)
+            console.log(`有人修改了${propName}属性`);
+        },
+        // 检测数据的删除
+        deleteProperty(target,propName){
+            // 当有人删除时触发
+            console.log(`有人删除了${propName}属性`);
+            return  Reflect.deleteProperty(target,propName)
+        }
+    })
+    
+    
+    // 引入Reflect
+    let obj = {a:1,b:3}
+    // 使用Object.defineProperty
+    // 重复会直接报错，无法执行后续代码
+    //#region 
+    // Object.defineProperty(obj,'c',{
+    //     get(){
+    //         return 4
+    //     }
+    // })
+    // Object.defineProperty(obj,'c',{
+    //     get(){
+    //         return 5
+    //     }
+    // })
+    //#endregion
+    // 使用Reflect.defineProperty
+    // 遇见错误会跳过，执行后续代码
+    //#region 
+    // Reflect.defineProperty(obj,'c',{
+    //     get(){
+    //         return 2
+    //     }
+    // })
+    // Reflect.defineProperty(obj,'c',{
+    //     get(){
+    //         return 4
+    //     }
+    // })
+    // console.log('111112');
+    //#endregion
+</script>
+</html>
