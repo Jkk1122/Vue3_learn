@@ -38,7 +38,7 @@
 
 1. Composition API（组合API）
 
-   - setup配置
+   - setup配置__
    - ref与reactive
    - watch与watchEffect
    - provide与inject
