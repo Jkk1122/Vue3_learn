@@ -1,7 +1,7 @@
 <!-- 
     主要讨论
-    1、setup执行的时机
-    2、setup的参数
+    1、setup执行的时机 在生命周期钩子beforeCreate之前，this的值为undefined。 在组合式API生命周期钩子中，没有beforeCreate和created 或者说 setup就是这两个钩子
+    2、setup的参数：两个参数，props和context   其中props相当于vue2中的；context中的有attrs，emit，slot
  -->
 
 
